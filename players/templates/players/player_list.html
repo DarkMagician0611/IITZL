@@ -1,0 +1,110 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Players | Zeheri League
+{% endblock %}
+
+{% block addition %}
+{% if perms.net.can_add_player %}
+<li class=''>
+	<a href="{% url 'players:player_create' %}">
+		<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+		&nbsp; Add Player
+	</a>
+</li>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<h2 align='center'>Musketeers</h2>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Venom</th>
+		<th>Category</th>
+		<th>Fresher/PG</th>
+	</tr>
+	{% for player in musketeers %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' player.name %}">{{ player.name }}</a></th>
+			<td>{{ player.venom }} ml</td>
+			<td>{{ player.category }}</td>
+			<td>{{ player.fresher_pg }}</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+
+<h2 align='center'>Redhawks</h2>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Venom</th>
+		<th>Category</th>
+		<th>Fresher/PG</th>
+	</tr>
+	{% for player in redhawks %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' player.name %}">{{ player.name }}</a></th>
+			<td>{{ player.venom }} ml</td>
+			<td>{{ player.category }}</td>
+			<td>{{ player.fresher_pg }}</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+
+<h2 align='center'>Spartans</h2>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Venom</th>
+		<th>Category</th>
+		<th>Fresher/PG</th>
+	</tr>
+	{% for player in spartans %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' player.name %}">{{ player.name }}</a></th>
+			<td>{{ player.venom }} ml</td>
+			<td>{{ player.category }}</td>
+			<td>{{ player.fresher_pg }}</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+
+<h2 align='center'>Thunder Strikers</h2>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Venom</th>
+		<th>Category</th>
+		<th>Fresher/PG</th>
+	</tr>
+	{% for player in thunder %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' player.name %}">{{ player.name }}</a></th>
+			<td>{{ player.venom }} ml</td>
+			<td>{{ player.category }}</td>
+			<td>{{ player.fresher_pg }}</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+{% endblock %}

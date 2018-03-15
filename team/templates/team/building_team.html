@@ -1,0 +1,91 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Create Team
+{% endblock %}
+
+{% block body %}
+<h1 align='center'>Create Team</h1>
+<br/>
+<h3 align='center'>{{ count }} More Players To Be Added({{ anti_venom }} ml Anti-Venom left)</h3>
+<form action="{% url 'team:playerAdd' %}" method='post' align='center'>
+	{% csrf_token %}
+	<table align='center'>
+		<col width='150'>
+		<col width='200'>
+		<tr align='left'>
+			<th>
+				<label>Squad:</label>
+			</th>
+			<td>
+				<select name="squad" required id="id_squad">
+					<option value="">---------</option>
+  					{% for s in squads %}
+						<option value='{{ s }}'>{{ s }}</option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+		<tr align='left'>
+			<th>
+				<label>Player:</label>
+			</th>
+			<td>
+				<select name="player" required id="id_player">
+  					<option value="" selected>---------</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<input type='submit' value='Add Player'>
+</form>
+
+<h2 align='center'>Players Selected</h2>
+<br/>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Squad</th>
+		<th>Venom</th>
+		<th>Category</th>
+		<th>Fresher/PG</th>
+		<th>Delete?</th>
+	</tr>
+	{% for team_player in team_players %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' team_player.player.name %}">{{ team_player.player.name }}</a></th>
+			<td>{{ team_player.player.squad }}</td>
+			<td>{{ team_player.player.venom }} ml</td>
+			<td>{{ team_player.player.category }}</td>
+			<td>{{ team_player.player.fresher_pg }}</td>
+			<td><a href="{% url 'team:deleteTeamPlayer' team_player.player.name %}">Yes</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+	$('#id_squad').change(function () {
+		var url = "{% url 'team:loadPlayer' %}";
+		var squad = $(this).val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'squad' : squad
+			},
+			success: function (data){
+				$('#id_player').html(data);
+			}
+		});
+	});
+</script>
+{% endblock %}

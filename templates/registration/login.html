@@ -1,0 +1,29 @@
+{% extends 'home/base.html' %}
+
+{% block special %}
+
+{% if form.errors %}
+<p align='center'>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<h2 align='center'>Welcome to Zeheri League</h2>
+<br/>
+<h3 align='center'>Login with your credentials</h3>
+<br/>
+<form method="post" action="{% url 'login' %}" align='center'>
+{% csrf_token %}
+  <table align='center'>
+    <tr>
+      <th>{{ form.username.label_tag }}</th>
+      <td>{{ form.username }}</td>
+    </tr>
+    <tr>
+      <th>{{ form.password.label_tag }}</th>
+      <td>{{ form.password }}</td>
+    </tr>
+  </table>
+  <br/>
+  <input type="submit" value="Login" />
+</form>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Add Fielder Record
+{% endblock %}
+
+{% block body %}
+<h1 align='center'>Add Fielder Record</h1>
+<br/>
+<form action="{% url 'scores:addField' %}" method='post' align='center'>
+	{% csrf_token %}
+	<table align='center'>
+		<col width='150'>
+		<col width='200'>
+		<tr align='left'>
+			<th>
+				<label>Squad:</label>
+			</th>
+			<td>
+				<select name="squad" required id="id_squad">
+					<option value="">---------</option>
+  					{% for s in squads %}
+						<option value='{{ s }}'>{{ s }}</option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+		<tr align='left'>
+			<th>
+				<label>Player:</label>
+			</th>
+			<td>
+				<select name="player" required id="id_player">
+  					<option value="" selected>---------</option>
+				</select>
+			</td>
+		</tr>
+		<tr align='left'>
+			<th>Match:</th>
+			<td><input type="number" name="match"></td>
+		</tr>
+		<tr align='left'>
+			<th>Stumps:</th>
+			<td><input type="number" name="stumps"></td>
+		</tr>
+		<tr align='left'>
+			<th>Catches:</th>
+			<td><input type="number" name="catches"></td>
+		</tr>
+		<tr align='left'>
+			<th>Run Outs:</th>
+			<td><input type="number" name="run_outs"></td>
+		</tr>
+	</table>
+	<br/>
+	<input type='submit' value='Add Player Record'>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+	$('#id_squad').change(function () {
+		var url = "{% url 'scores:loadPlayer' %}";
+		var squad = $(this).val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'squad' : squad
+			},
+			success: function (data){
+				$('#id_player').html(data);
+			}
+		});
+	});
+</script>
+{% endblock %}

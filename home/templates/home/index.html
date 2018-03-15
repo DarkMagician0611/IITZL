@@ -1,0 +1,13 @@
+{% extends 'home/base.html' %}
+
+{% block addition %}
+{% endblock %}
+
+{% block body %}
+<h2 align='center'>Welcome {{ user.get_full_name }} to Zeheri League</h2>
+<h1 align='center'>Let the Venom Spill</h1>
+<br/>
+<h2 align='center'><a href="{% url 'home:team' %}">Your Team</a></h2>
+<h2 align='center'><a href="{% url 'home:leaderboard' %}">Leaderboard</a></h2>
+<h2 align='center'><a href="{% url 'home:rules' %}">Rules</a></h2>
+{% endblock %}

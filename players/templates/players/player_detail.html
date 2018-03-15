@@ -1,0 +1,21 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Player {{ player.name }}
+{% endblock %}
+
+{% block body %}
+<h1>{{ player.name }} a.k.a. {{ player.ssn }}</h1>
+
+<ul>
+	<li>Squad : {{ player.squad }}</li>
+	<li>Venom : {{ player.venom }}</li>
+	<li>Category : {{ player.category }}</li>
+	<li>Fresher/PG : {{ player.fresher_pg }}</li>
+</ul>
+<br/>
+<br/>
+{% if perms.net.can_add_player %}
+<li><a href="{% url 'players:player_delete' player.name %}">Delete {{ player.name }}</a></li>
+{% endif %}
+{% endblock %}

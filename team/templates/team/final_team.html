@@ -1,0 +1,53 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Team Created
+{% endblock %}
+
+{% block addition %}
+<li class=''>
+	<a href="{% url 'team:updateMamba' %}">
+		<span class='glyphicon glyphicon-wrench' aria-hidden='true'></span>
+		&nbsp; Update Black Mamba
+	</a>
+</li>
+<li class=''>
+	<a href="{% url 'team:resetTeam' %}">
+		<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>
+		&nbsp; Reset Team
+	</a>
+</li>
+{% endblock %}
+
+{% block body %}
+<h2 align='center'>Team Created</h2>
+<h3 align='center'>Black Mamba: {{ team.black_mamba }}</h3>
+<br/>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Squad</th>
+		<th>Venom</th>
+		<th>Category</th>
+		<th>Fresher/PG</th>
+		<th>Update</th>
+	</tr>
+	{% for team_player in team_players %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' team_player.player.name %}">{{ team_player.player.name }}</a></th>
+			<td>{{ team_player.player.squad }}</td>
+			<td>{{ team_player.player.venom }} ml</td>
+			<td>{{ team_player.player.category }}</td>
+			<td>{{ team_player.player.fresher_pg }}</td>
+			<td><a href="{% url 'team:update' team_player.player.name %}">Yes</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+{% endblock %}

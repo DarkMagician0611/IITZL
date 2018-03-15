@@ -1,0 +1,35 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Users | Zeheri League
+{% endblock %}
+
+{% block addition %}
+{% if perms.net.can_add_player %}
+<li class=''>
+	<a href="{% url 'leaderboard:matchNumber' %}">
+		<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+		&nbsp; Give Points
+	</a>
+</li>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<h2 align='center'>Users</h2>
+<table border='2' align='center'>
+	<col width='150'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Points</th>
+	</tr>
+	{% for user in users %}
+		<tr>
+			<td>{{ user.user.first_name }}</td>
+			<td>{{ user.points }}</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+{% endblock %}

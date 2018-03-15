@@ -1,0 +1,31 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Select Match
+{% endblock %}
+
+{% block body %}
+<h1 align='center'>Select Match</h1>
+<br/>
+<form action="{% url 'leaderboard:calculateScore' %}" method='post' align='center'>
+	{% csrf_token %}
+	<table align='center'>
+		<col width='150'>
+		<col width='100'>
+		<tr align='left'>
+			<th>
+				<label>Player:</label>
+			</th>
+			<td>
+				<select name="match">
+  					{% for m in matches %}
+						<option value='{{ m }}'>{{ m }}</option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<input type='submit' value='Give Points'>
+</form>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Select Black Mamba
+{% endblock %}
+
+{% block body %}
+<h1 align='center'>Select Black Mamba</h1>
+<br/>
+<form action="{% url 'team:addBlackMamba' %}" method='post' align='center'>
+	{% csrf_token %}
+	<table align='center'>
+		<col width='150'>
+		<col width='200'>
+		<tr align='left'>
+			<th>
+				<label>Player:</label>
+			</th>
+			<td>
+				<select name="player">
+  					{% for p in players %}
+						<option value='{{ p.player.name }}'>{{ p.player.name }}</option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<input type='submit' value='Select Black Mamba'>
+</form>
+{% endblock %}

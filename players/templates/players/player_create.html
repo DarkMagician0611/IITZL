@@ -1,0 +1,75 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Add Player
+{% endblock %}
+
+{% block body %}
+<h1 align='center'>Add Player</h1>
+<br/><br/>
+<form action="{% url 'players:addPlayer' %}" method='post' align='center'>
+	{% csrf_token %}
+	<table align='center'>
+		<col width='150'>
+		<col width='200'>
+		<tr align='left'>
+			<th>Name:</th>
+			<td><input type="text" name="name"></td>
+		</tr>
+		<tr align='left'>
+			<th>Secret Snake Name:</th>
+			<td><input type="text" name="ssn"></td>
+		</tr>
+		<tr align='left'>
+			<th>
+				<label>Squad:</label>
+			</th>
+			<td>
+				<select name="squad">
+  					{% for s in squads %}
+						<option value='{{ s }}'>{{ s }}</option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+		<tr align='left'>
+			<th>
+				<label>Venom(in ml):</label>
+			</th>
+			<td>
+				<select name="venom">
+  					{% for v in venoms %}
+						<option value='{{ v }}'>{{ v }}</option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+		<tr align='left'>
+			<th>
+				<label>Category:</label>
+			</th>
+			<td>
+				<select name="category">
+  					{% for c in categories %}
+						<option value='{{ c }}'>{{ c }}</option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+		<tr align='left'>
+			<th>
+				<label>Fresher/PG:</label>
+			</th>
+			<td>
+				<select name="freshers">
+  					{% for f in freshers %}
+						<option value='{{ f }}'>{{ f }}</option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<input type='submit' value='Add Player'>
+</form>
+{% endblock %}

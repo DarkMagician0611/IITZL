@@ -1,0 +1,10 @@
+{% extends 'home/base.html' %}
+
+{% block addition %}
+{% endblock %}
+
+{% block body %}
+<h2 align='center'><a href="{% url 'scores:batting' %}">Batsman</a></h2>
+<h2 align='center'><a href="{% url 'scores:bowling' %}">Bowler</a></h2>
+<h2 align='center'><a href="{% url 'scores:fielding' %}">Fielder</a></h2>
+{% endblock %}

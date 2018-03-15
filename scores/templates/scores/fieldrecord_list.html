@@ -1,0 +1,51 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Fielder | Match Records
+{% endblock %}
+
+{% block addition %}
+<li class=''>
+	<a href="{% url 'scores:createField' %}">
+		<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+		&nbsp; Add Fielder Record
+	</a>
+</li>
+{% endblock %}
+
+{% block body %}
+<h2 align='center'>Fielder</h2>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Squad</th>
+		<th>Match</th>
+		<th>Stumps</th>
+		<th>Run Outs</th>
+		<th>Catches</th>
+		<th>Points</th>
+		<th>Delete?</th>
+	</tr>
+	{% for player in fieldrecord_list %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' player.player.name %}">{{ player.player.name }}</a></th>
+			<td>{{ player.player.squad }}</td>
+			<td>{{ player.match }}</td>
+			<td>{{ player.stumps }}</td>
+			<td>{{ player.run_outs }}</td>
+			<td>{{ player.catches }}</td>
+			<td>{{ player.points }}</td>
+			<td><a href="{% url 'scores:fieldDelete' player.player %}">Yes</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+{% endblock %}
