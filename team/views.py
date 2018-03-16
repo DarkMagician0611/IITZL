@@ -17,6 +17,9 @@ def index(request):
 	team = Team.objects.filter(name=name)
 	if team.exists():
 		team_players = PlayerTeam.objects.filter(team=team[0])
+		if len(team_players) > squad_length:
+			team.delete()
+			return render(request, 'team/team_create.html', {})
 		context = {'team_players' : team_players, 'team' : team[0]}
 		return render(request, 'team/final_team.html', context)
 	else:
@@ -43,7 +46,7 @@ def addPlayerLater(request):
 	team = team[0]
 	team_players = PlayerTeam.objects.filter(team=team)
 	if len(team_players) == squad_length:
-		return render(request, 'team/final_team.html', {})
+		return render(request, 'team/final_team.html', {'team_players' : team_players, 'team' : team})
 	count = len(team_players)
 	venom = 0
 	for tp in team_players:
@@ -148,6 +151,8 @@ def deleteTeamPlayer(request, name):
 	player = Player.objects.get(name=name)
 	team_player = PlayerTeam.objects.filter(team=team[0], player=player)
 	team_player = team_player[0]
+	if team_player.player.name == team[0].black_mamba.name:
+		team[0].black_mamba = None
 	team_player.delete()
 	team_players = PlayerTeam.objects.filter(team=team[0])
 	count = len(team_players)
@@ -175,7 +180,7 @@ def update(request, name):
 	team_player = PlayerTeam.objects.filter(team=team[0], player=player)
 	team_player = team_player[0]
 	global dummy
-	dummy.append(team_player)
+	dummy.append(str(team_player) + '&' + str(team))
 	squads = squad_list
 	return render(request, 'team/update.html', {'squads' : squads})
 
@@ -190,22 +195,29 @@ def playerUpdate(request):
 	team_player.save()
 	venom = 0
 	global dummy
-	team_players = PlayerTeam.objects.filter(team=team).exclude(player=dummy[0].player)
+	y = [s for s in dummy if str(team) in s]
+	y = y[0]
+	pt = y.split('&')
+	p = PlayerTeam.objects.get(name=pt[0])
+	team_players = PlayerTeam.objects.filter(team=team).exclude(player=p.player)
 	for tp in team_players:
 		venom += tp.player.venom
 	anti_venom = initial_anti_venom - venom
 	if anti_venom < 0:
 		team_player.delete()
-		dummy = []
+		dummy.remove(y)
 		return HttpResponse('<h2>Too much venom</h2>')
 	error = checkValidity(team_players, team)
-	if error == '':
-		dummy[0].delete()
-		dummy = []
-		return render(request, 'team/addBlackMamba.html', {'players' : team_players})
+	if error == '' or len(team_players) < squad_length:
+		p.delete()
+		dummy.remove(y)
+		if p.player.name == team.black_mamba.name:
+			return render(request, 'team/addBlackMamba.html', {'players' : team_players})
+		else:
+			return render(request, 'team/final_team.html', {'team_players' : team_players, 'team' : team})
 	else:
 		team_player.delete()
-		dummy = []
+		dummy.remove(y)
 		return HttpResponse('<h2>' + error + '</h2>')
 
 def resetTeam(request):
