@@ -8,7 +8,7 @@ import time
 initial_anti_venom = 1100
 squad_length = 11
 squad_list = ['Musketeers', 'Redhawks', 'Spartans', 'Thunder Strikers']
-dummy = []
+# dummy = []
 
 def index(request):
 	um = UserMatch(user=request.user, match=request.POST['match'])
@@ -179,8 +179,8 @@ def update(request, name):
 	player = Player.objects.get(name=name)
 	team_player = PlayerTeam.objects.filter(team=team[0], player=player)
 	team_player = team_player[0]
-	global dummy
-	dummy.append(str(team_player) + '&' + str(team))
+	um.player = str(team_player)
+	um.save()
 	squads = squad_list
 	return render(request, 'team/update.html', {'squads' : squads})
 
@@ -194,30 +194,29 @@ def playerUpdate(request):
 	team_player = PlayerTeam(team=team, player=player, name=name)
 	team_player.save()
 	venom = 0
-	global dummy
-	y = [s for s in dummy if str(team) in s]
-	y = y[0]
-	pt = y.split('&')
-	p = PlayerTeam.objects.get(name=pt[0])
+	p = PlayerTeam.objects.get(name=um.player)
 	team_players = PlayerTeam.objects.filter(team=team).exclude(player=p.player)
 	for tp in team_players:
 		venom += tp.player.venom
 	anti_venom = initial_anti_venom - venom
 	if anti_venom < 0:
 		team_player.delete()
-		dummy.remove(y)
+		um.player = ''
+		um.save()
 		return HttpResponse('<h2>Too much venom</h2>')
 	error = checkValidity(team_players, team)
 	if error == '' or len(team_players) < squad_length:
 		p.delete()
-		dummy.remove(y)
+		um.player = ''
+		um.save()
 		if p.player.name == team.black_mamba.name:
 			return render(request, 'team/addBlackMamba.html', {'players' : team_players})
 		else:
 			return render(request, 'team/final_team.html', {'team_players' : team_players, 'team' : team})
 	else:
 		team_player.delete()
-		dummy.remove(y)
+		um.player = ''
+		um.save()
 		return HttpResponse('<h2>' + error + '</h2>')
 
 def resetTeam(request):

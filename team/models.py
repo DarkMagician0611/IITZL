@@ -23,6 +23,7 @@ class PlayerTeam(models.Model):
 class UserMatch(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 	match = models.CharField(max_length=3, default='1')
+	player = models.CharField(max_length=30, blank=True)
 
 	def __str__(self):
 		return self.user
