@@ -33,21 +33,21 @@ def calculateScore(request):
 			for x in bat:
 				team_player = PlayerTeam.objects.filter(team=team, player=x.player)
 				if team_player.exists():
-					if x.player == team.black_mamba.name:
+					if x.player.name == team.black_mamba.name:
 						ud.points += 2 * x.points
 					else:
 						ud.points += x.points
 			for x in ball:
 				team_player = PlayerTeam.objects.filter(team=team, player=x.player)
 				if team_player.exists():
-					if x.player == team.black_mamba.name:
+					if x.player.name == team.black_mamba.name:
 						ud.points += 2 * x.points
 					else:
 						ud.points += x.points
 			for x in field:
 				team_player = PlayerTeam.objects.filter(team=team, player=x.player)
 				if team_player.exists():
-					if x.player == team.black_mamba.name:
+					if x.player.name == team.black_mamba.name:
 						ud.points += 2 * x.points
 					else:
 						ud.points += x.points
