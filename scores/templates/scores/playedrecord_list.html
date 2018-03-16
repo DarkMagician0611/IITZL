@@ -1,0 +1,42 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+Playing | Match Records
+{% endblock %}
+
+{% block addition %}
+<li class=''>
+	<a href="{% url 'scores:createPlay' %}">
+		<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+		&nbsp; Add Played Record
+	</a>
+</li>
+{% endblock %}
+
+{% block body %}
+<h2 align='center'>Players</h2>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Squad</th>
+		<th>Match</th>
+		<th>Points</th>
+		<th>Delete?</th>
+	</tr>
+	{% for player in playedrecord_list %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' player.player.name %}">{{ player.player.name }}</a></th>
+			<td>{{ player.player.squad }}</td>
+			<td>{{ player.match }}</td>
+			<td>{{ player.points }}</td>
+			<td><a href="{% url 'scores:playDelete' player.player %}">Yes</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+{% endblock %}

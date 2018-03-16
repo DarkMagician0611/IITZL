@@ -34,3 +34,11 @@ class FieldRecord(models.Model):
 
 	def __str__(self):
 		return self.player.name + ' Fielder ' + str(self.points)
+
+class PlayedRecord(models.Model):
+	player = models.OneToOneField(Player, on_delete=models.CASCADE, primary_key=True)
+	match = models.IntegerField(default=0)
+	points = models.IntegerField(default=2)
+
+	def __str__(self):
+		return self.player.name + ' Played ' + str(self.points)

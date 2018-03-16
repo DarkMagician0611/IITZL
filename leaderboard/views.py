@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import UserData
 from team.models import Team, PlayerTeam
-from scores.models import BatRecord, BallRecord, FieldRecord
+from scores.models import BatRecord, BallRecord, FieldRecord, PlayedRecord
 # Create your views here.
 def index(request):
 	users = UserData.objects.all().order_by('points').reverse()
@@ -10,7 +10,7 @@ def index(request):
 	return render(request, 'leaderboard/index.html', context)
 
 def matchNumber(request):
-	matches = [1]
+	matches = [1, 2]
 	return render(request, 'leaderboard/calculate.html', {'matches' : matches})
 
 def calculateScore(request):
@@ -24,6 +24,7 @@ def calculateScore(request):
 	bat = BatRecord.objects.filter(match=match)
 	ball = BallRecord.objects.filter(match=match)
 	field = FieldRecord.objects.filter(match=match)
+	play = PlayedRecord.objects.filter(match=match)
 	for user in users:
 		name = str(user) + ' match#' + str(match)
 		team = Team.objects.filter(name=name)
@@ -51,6 +52,10 @@ def calculateScore(request):
 						ud.points += 2 * x.points
 					else:
 						ud.points += x.points
+			for x in play:
+				team_player = PlayerTeam.objects.filter(team=team, player=x.player)
+				if team_player.exists():
+					ud.points += x.points
 			ud.save()
 	return redirect('/leaderboard/')
 

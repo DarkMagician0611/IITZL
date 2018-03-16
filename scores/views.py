@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import DeleteView
 from django.views.generic import ListView
-from .models import BatRecord, BallRecord, FieldRecord
+from .models import BatRecord, BallRecord, FieldRecord, PlayedRecord
 from players.models import Player
 from django.urls import reverse_lazy
 # Create your views here.
@@ -21,6 +21,10 @@ class FieldList(ListView):
 	queryset = FieldRecord.objects.order_by('match', 'points').reverse()
 	context_object_name = 'fieldrecord_list'
 
+class PlayedList(ListView):
+	queryset = PlayedRecord.objects.order_by('match', 'points').reverse()
+	context_object_name = 'playedrecord_list'
+
 class BatDelete(DeleteView):
 	model = BatRecord
 	success_url = reverse_lazy('scores:batting')
@@ -32,6 +36,10 @@ class BallDelete(DeleteView):
 class FieldDelete(DeleteView):
 	model = FieldRecord
 	success_url = reverse_lazy('scores:fielding')
+
+class PlayDelete(DeleteView):
+	model = PlayedRecord
+	success_url = reverse_lazy('scores:playing')
 
 def createBat(request):
 	squads = ['Spartans', 'Musketeers', 'Redhawks', 'Thunder Strikers']
@@ -87,6 +95,17 @@ def addField(request):
 	note = FieldRecord(player=player, stumps=stumps, catches=catches, run_outs=run_outs, points=points, match=match)
 	note.save()
 	return redirect('/scores/fielding/')
+
+def createPlay(request):
+	squads = ['Spartans', 'Musketeers', 'Redhawks', 'Thunder Strikers']
+	return render(request, 'scores/addPlay.html', {'squads' : squads})
+
+def addPlay(request):
+	player = Player.objects.get(name=request.POST['player'])
+	match = int(request.POST['match'])
+	note = PlayedRecord(player=player, match=match)
+	note.save()
+	return redirect('/scores/playing/')
 
 def loadPlayer(request):
 	squad = request.GET.get('squad')
