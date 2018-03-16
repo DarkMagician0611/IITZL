@@ -7,25 +7,24 @@ Select Match
 {% block body %}
 <h1 align='center'>Select Match</h1>
 <br/>
-<form action="{% url 'leaderboard:calculateScore' %}" method='post' align='center'>
+<form action="{% url 'team:index' %}" method='post' align='center'>
 	{% csrf_token %}
 	<table align='center'>
 		<col width='150'>
-		<col width='100'>
+		<col width='300'>
 		<tr align='left'>
 			<th>
 				<label>Match:</label>
 			</th>
 			<td>
 				<select name="match">
-  					{% for m in matches %}
-						<option value='{{ m }}'>{{ m }}</option>
-					{% endfor %}
+					<option value='1'>Blitzkrieg v/s Redhawks (Freezes @ 8 A.M. on 17 March)</option>
+					<option value='2'>Spartans v/s Strikers (Freezes @ 1 P.M. on 17 March)</option>
 				</select>
 			</td>
 		</tr>
 	</table>
 	<br/>
-	<input type='submit' value='Give Points'>
+	<input type='submit' value='Select Match'>
 </form>
 {% endblock %}

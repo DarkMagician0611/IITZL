@@ -1,5 +1,6 @@
 from django.db import models
 from players.models import Player
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Team(models.Model):
@@ -18,3 +19,10 @@ class PlayerTeam(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class UserMatch(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+	match = models.CharField(max_length=3, default='1')
+
+	def __str__(self):
+		return self.user

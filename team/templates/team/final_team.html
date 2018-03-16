@@ -6,13 +6,19 @@ Team Created
 
 {% block addition %}
 <li class=''>
+	<a href="{% url 'team:addPlayerLater' %}">
+		<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+		&nbsp; Add Player
+	</a>
+</li>
+<li class=''>
 	<a href="{% url 'team:updateMamba' %}">
 		<span class='glyphicon glyphicon-wrench' aria-hidden='true'></span>
 		&nbsp; Update Black Mamba
 	</a>
 </li>
 <li class=''>
-	<a href="{% url 'team:resetTeam' %}">
+	<a href="{% url 'team:resetTeam' %}" onclick="return confirm('Are you sure?')">
 		<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>
 		&nbsp; Reset Team
 	</a>

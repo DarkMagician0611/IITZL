@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import UserData
 from team.models import Team, PlayerTeam
 from scores.models import BatRecord, BallRecord, FieldRecord
 # Create your views here.
 def index(request):
-	users = UserData.objects.all()
+	users = UserData.objects.all().order_by('points').reverse()
 	context = {'users' : users}
 	return render(request, 'leaderboard/index.html', context)
 
@@ -33,15 +33,31 @@ def calculateScore(request):
 			for x in bat:
 				team_player = PlayerTeam.objects.filter(team=team, player=x.player)
 				if team_player.exists():
-					ud.points += x.points
+					if x.player == team.black_mamba.name:
+						ud.points += 2 * x.points
+					else:
+						ud.points += x.points
 			for x in ball:
 				team_player = PlayerTeam.objects.filter(team=team, player=x.player)
 				if team_player.exists():
-					ud.points += x.points
+					if x.player == team.black_mamba.name:
+						ud.points += 2 * x.points
+					else:
+						ud.points += x.points
 			for x in field:
 				team_player = PlayerTeam.objects.filter(team=team, player=x.player)
 				if team_player.exists():
-					ud.points += x.points
+					if x.player == team.black_mamba.name:
+						ud.points += 2 * x.points
+					else:
+						ud.points += x.points
 			ud.save()
 	return redirect('/leaderboard/')
 
+def profile(request):
+	u = UserData.objects.filter(user=request.user)
+	if not u.exists():
+		ud = UserData(user=request.user)
+		ud.save()
+	u = u[0]
+	return render(request, 'leaderboard/profile.html', {'u' : u})

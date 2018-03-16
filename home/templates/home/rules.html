@@ -1,33 +1,38 @@
 {% extends 'home/base.html' %}
 
-{% block body %}
+{% block common %}
 <h2 align='center'>Rules</h2>
 <br/>
 <h4>1. Zeheri Team should consist of atleast 3 Batsmen, 3 Bowler, 1 Wicket-Keeper and 1 All-Rounder</h4>
-<h4>2. Overall venom shouldn't exceed 1200 ml</h4>
+<h4>2. Overall venom shouldn't exceed 1100 ml</h4>
 <h4>3. Atleast 2 UG Freshers and 1 PG student</h4>
 <h4>4. 11 Players are to be selected</h4>
 <h4>5. 1 Player will be selected as Black Mamba player</h4>
 <h4>6. 20 number of substitutions are allowed in the entire league</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;6.1. The number of changes between two freezed teams will be counted as substitutions</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;6.2. UG Fresher replaced with UG Fresher will not be counted as substitution</h4>
 <br/>
 <h2 align='center'>Points' Structure</h2>
 <br/>
 <h3>1. Batsman</h3>
-<h4>1.1. 1 Run: +1 Point</h4>
-<h4>1.2. +(Runs - Balls) Points</h4>
-<h4>1.3. 1 Six: +2 Points</h4>
-<h4>1.4. 1 Four: +1 Point</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;1.1. 1 Run: +1 Point</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;1.2. +(Runs - Balls) Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;1.3. 1 Six: +2 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;1.4. 1 Four: +1 Point</h4>
 <h3>2. Bowler</h3>
-<h4>2.1. 1st Wicket: +10 Points</h4>
-<h4>2.2. 2nd Wicket: +20 Points</h4>
-<h4>2.3. 3rd Wicket: +30 Points</h4>
-<h4>2.4. 4th or above: +30 Points</h4>
-<h4>2.5. +(7 x Overs - Runs) Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;2.1. 1st Wicket: +10 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;2.2. 2nd Wicket: +20 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;2.3. 3rd Wicket: +30 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;2.4. 4th or above: +30 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;2.5. +(7 x Overs - Runs) Points</h4>
 <h3>3. Fielder</h3>
-<h4>3.1. 1 Catch-Out: +5 Points</h4>
-<h4>3.2. 1 Stump: +5 Points</h4>
-<h4>3.3. 1 Run-Out: +5 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;3.1. 1 Catch-Out: +5 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;3.2. 1 Stump: +5 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;3.3. 1 Run-Out: +5 Points</h4>
 <h3>4. Extra Points</h3>
-<h4>4.1. For each playing player in your team: +2 Points</h4>
-<h4>4.2. Black Mamba player: 2x Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;4.1. For each playing player in your team: +2 Points</h4>
+<h4>&nbsp;&nbsp;&nbsp;&nbsp;4.2. Black Mamba player: 2x Points</h4>
+{% endblock %}
+
+{% block special %}
 {% endblock %}

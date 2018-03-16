@@ -1,36 +1,57 @@
 from django.shortcuts import render, redirect
-from .models import Team, PlayerTeam
+from .models import Team, PlayerTeam, UserMatch
 from players.models import Player
 from django.http import HttpResponse
 import time
 
 # Create your views here.
-initial_anti_venom = 1200
+initial_anti_venom = 1100
 squad_length = 11
 squad_list = ['Musketeers', 'Redhawks', 'Spartans', 'Thunder Strikers']
-match = '1'
 dummy = []
 
 def index(request):
-	name = str(request.user) + ' match#' + match
+	um = UserMatch(user=request.user, match=request.POST['match'])
+	um.save()
+	name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=name)
 	if team.exists():
 		team_players = PlayerTeam.objects.filter(team=team[0])
-		if len(team_players) < squad_length:
-			return render(request, 'team/team_create.html', {})
 		context = {'team_players' : team_players, 'team' : team[0]}
 		return render(request, 'team/final_team.html', context)
 	else:
 		return render(request, 'team/team_create.html', {})
 
+def selectMatch(request):
+	return render(request, 'team/match.html', {})
+
 def teamAddIndex(request):
 	squads = squad_list
-	name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=name)
 	if team.exists():
 		team.delete()
 	team_players = PlayerTeam.objects.none()
 	context = {'team_players' : team_players, 'squads' : squads, 'count' : squad_length, 'anti_venom' : initial_anti_venom}
+	return render(request, 'team/building_team.html', context)
+
+def addPlayerLater(request):
+	um = UserMatch.objects.get(user=request.user)
+	name = str(request.user) + ' match#' + um.match
+	team = Team.objects.filter(name=name)
+	team = team[0]
+	team_players = PlayerTeam.objects.filter(team=team)
+	if len(team_players) == squad_length:
+		return render(request, 'team/final_team.html', {})
+	count = len(team_players)
+	venom = 0
+	for tp in team_players:
+		venom += tp.player.venom
+	anti_venom = initial_anti_venom - venom
+	squads = squad_list
+	count = squad_length - count
+	context = {'team_players' : team_players, 'team' : team, 'squads' : squads, 'count' : count, 'anti_venom' : anti_venom}
 	return render(request, 'team/building_team.html', context)
 
 def checkValidity(team_players, team):
@@ -53,7 +74,8 @@ def checkValidity(team_players, team):
 	return error
 
 def playerAdd(request):
-	name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=name)
 	if team.exists():
 		team = team[0]
@@ -75,7 +97,7 @@ def playerAdd(request):
 			if error == '':
 				return render(request, 'team/addBlackMamba.html', {'players' : team_players})
 			else:
-				team.delete()
+				team_player.delete()
 				return HttpResponse('<h2>' + error + '</h2>')
 		else:
 			squads = squad_list
@@ -84,7 +106,6 @@ def playerAdd(request):
 			return render(request, 'team/building_team.html', context)
 	else:
 		player = Player.objects.get(pk=request.POST['player'])
-		name = str(request.user) + ' match#' + match
 		team = Team(name=name, black_mamba=player)
 		team.save()
 		name = str(team) + str(player)
@@ -99,19 +120,21 @@ def playerAdd(request):
 
 def loadPlayer(request):
 	squad = request.GET.get('squad')
-	name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=name)
 	exclude = []
 	if team.exists():
 		players = list(PlayerTeam.objects.filter(team=team[0]))
 		exclude = [player.player.name for player in players]
-	players = Player.objects.filter(squad=squad).exclude(name__in=exclude)
+	players = Player.objects.filter(squad=squad).exclude(name__in=exclude).order_by('venom').reverse()
 	context = {'players' : players}
 	return render(request, 'team/player_options.html', context)
 
 def addBlackMamba(request):
 	player = Player.objects.get(pk=request.POST['player'])
-	name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=name)
 	team = team[0]
 	team.black_mamba = player
@@ -119,7 +142,8 @@ def addBlackMamba(request):
 	return redirect('/team/')
 
 def deleteTeamPlayer(request, name):
-	team_name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	team_name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=team_name)
 	player = Player.objects.get(name=name)
 	team_player = PlayerTeam.objects.filter(team=team[0], player=player)
@@ -137,13 +161,15 @@ def deleteTeamPlayer(request, name):
 	return render(request, 'team/building_team.html', context)
 
 def updateMamba(request):
-	name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=name)
 	team_players = PlayerTeam.objects.filter(team=team[0])
 	return render(request, 'team/addBlackMamba.html', {'players' : team_players})
 
 def update(request, name):
-	team_name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	team_name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=team_name)
 	player = Player.objects.get(name=name)
 	team_player = PlayerTeam.objects.filter(team=team[0], player=player)
@@ -154,7 +180,8 @@ def update(request, name):
 	return render(request, 'team/update.html', {'squads' : squads})
 
 def playerUpdate(request):
-	name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=name)
 	team = team[0]
 	player = Player.objects.get(pk=request.POST['player'])
@@ -182,9 +209,11 @@ def playerUpdate(request):
 		return HttpResponse('<h2>' + error + '</h2>')
 
 def resetTeam(request):
-	name = str(request.user) + ' match#' + match
+	um = UserMatch.objects.get(user=request.user)
+	name = str(request.user) + ' match#' + um.match
 	team = Team.objects.filter(name=name)
 	team = team[0]
 	team_players = PlayerTeam.objects.filter(team=team)
 	team_players.delete()
+	team.delete()
 	return render(request, 'team/team_create.html', {})

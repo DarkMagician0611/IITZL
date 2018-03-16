@@ -4,9 +4,11 @@ from . import views
 app_name = 'team'
 
 urlpatterns = [
-	path('', views.index, name='index'),
+	path('', views.selectMatch, name='selectMatch'),
+	path('index/', views.index, name='index'),
 	path('teamAddIndex/', views.teamAddIndex, name='teamAddIndex'),
 	path('playerAdd/', views.playerAdd, name='playerAdd'),
+	path('addPlayerLater/', views.addPlayerLater, name='addPlayerLater'),
 	path('addBlackMamba/', views.addBlackMamba, name='addBlackMamba'),
 	path('loadPlayer/', views.loadPlayer, name='loadPlayer'),
 	path('updateMamba/', views.updateMamba, name='updateMamba'),

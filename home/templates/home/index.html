@@ -4,10 +4,20 @@
 {% endblock %}
 
 {% block body %}
-<h2 align='center'>Welcome {{ user.get_full_name }} to Zeheri League</h2>
+<h2 align='center'>Welcome {{ user.get_full_name }} to ZeheriLeague</h2>
 <h1 align='center'>Let the Venom Spill</h1>
 <br/>
 <h2 align='center'><a href="{% url 'home:team' %}">Your Team</a></h2>
+{% if perms.net.can_add_player %}
 <h2 align='center'><a href="{% url 'home:leaderboard' %}">Leaderboard</a></h2>
+{% endif %}
 <h2 align='center'><a href="{% url 'home:rules' %}">Rules</a></h2>
+{% endblock %}
+
+{% block special %}
+<p style="text-align:center;"><img src='/static/home/images/cobra.png' alt='IITZL Logo' width='200' height='200'></p>
+<h1 align='center'>ZeheriLeague</h1>
+<h3 align='center'>(The Official Fantasy League of IIT Premier League)</h3>
+<br/>
+<h3 align='center'><a href="https://goo.gl/forms/P7pZt3tqUpetkQyk2">Fill this form to get login credentials</a></h3>
 {% endblock %}

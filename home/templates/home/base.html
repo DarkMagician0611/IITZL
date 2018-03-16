@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset='UTF-8'>
-	<title>{% block title %}Zeheri League{% endblock %}</title>
+	<title>{% block title %}ZeheriLeague{% endblock %}</title>
 	{% load staticfiles %}
 	{% block scripts %}
 	{% endblock %}
@@ -39,16 +39,21 @@
 			<ul class='nav navbar-nav navbar-right'>
 				{% block addition %}
 				{% endblock %}
+				{% if user.is_authenticated %}
 				<li class=''>
-					<a href="{% url 'home:admin' %}">
-						<span class='glyphicon glyphicon-user' aria-hidden='true'></span>
-						{% if user.is_authenticated %}
-							&nbsp; {{ user.get_username }}
-						{% else %}
+					{% if perms.net.can_add_player %}
+						<a href="{% url 'home:admin' %}">
+							<span class='glyphicon glyphicon-user' aria-hidden='true'></span>
 							&nbsp; Admin
-						{% endif %}
-					</a>
+						</a>
+					{% else %}
+						<a href="{% url 'leaderboard:profile' %}">
+							<span class='glyphicon glyphicon-user' aria-hidden='true'></span>
+							&nbsp; {{ user }}
+						</a>
+					{% endif %}
 				</li>
+				{% endif %}
 				{% if user.is_authenticated %}
 					<li class=''>
 						<a href="{% url 'logout' %}">
@@ -70,13 +75,15 @@
 </nav>
 
 <body>
-	{% block special %}
-		{% if user.is_authenticated %}
-			{% block body %}
-			{% endblock %}
-		{% else %}
+	{% if user.is_authenticated %}
+		{% block body %}
+		{% endblock %}
+	{% else %}
+		{% block special %}
 			<h2 align='center'>You must be logged in to use this site</h2>
-		{% endif %}
+		{% endblock %}
+	{% endif %}
+	{% block common %}
 	{% endblock %}
 </body>
 
@@ -104,6 +111,7 @@
                 		&nbsp; Rules
                 	</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="">
                 	<a href="{% url 'home:team' %}">
                 		&nbsp; Your Team
@@ -115,16 +123,17 @@
                 		&nbsp; Scores
                 	</a>
                 </li>
-                {% endif %}
                 <li class="">
                 	<a href="{% url 'home:leaderboard' %}">
                 		&nbsp; Leaderboard
                 	</a>
                 </li>
+                {% endif %}
+                {% endif %}
             </ul>
             <ul class='nav navbar-nav navbar-right'>
             	<li class=''>
-            		<a href='http://www.negotiationtableiitd.com'>Visit Facebook</a>
+            		<a href='https://www.facebook.com/IITPremierLeague/'>Visit Facebook</a>
             	</li>
             	<li class=''>
             		<a href='https://www.facebook.com/shubham.chaudhary.35912'>Designed By: Shubham Chaudhary</a>

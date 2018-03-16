@@ -1,0 +1,22 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+{{ u.user }} | Zeheri League
+{% endblock %}
+
+{% block body %}
+<h2 align='center'>{{ u.user }}</h2>
+<table border='2' align='center'>
+	<col width='150'>
+	<col width='100'>
+	<tr>
+		<th>Points</th>
+		<td>{{ u.points }}</th>
+	</tr>
+	<tr>
+		<th>Substitutions Left</th>
+		<td>{{ u.substitutes }}</th>
+	</tr>
+</ul>
+</table>
+{% endblock %}
