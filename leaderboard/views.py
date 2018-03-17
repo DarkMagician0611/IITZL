@@ -57,6 +57,10 @@ def calculateScore(request):
 				if team_player.exists():
 					ud.points += x.points
 			ud.save()
+	bat.delete()
+	ball.delete()
+	field.delete()
+	play.delete()
 	return redirect('/leaderboard/')
 
 def profile(request):
@@ -66,3 +70,15 @@ def profile(request):
 		ud.save()
 	u = u[0]
 	return render(request, 'leaderboard/profile.html', {'u' : u})
+
+def resetUsers(request):
+	users = User.objects.filter(groups__name='Players')
+	for user in users:
+		u = UserData.objects.filter(user=user)
+		if not u.exists():
+			ud = UserData(user=user)
+			ud.save()
+		ud = UserData.objects.get(user=user)
+		ud.points = 0
+		ud.save()
+	return redirect('/leaderboard/')
