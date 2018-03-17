@@ -8,9 +8,7 @@
 <h1 align='center'>Let the Venom Spill</h1>
 <br/>
 <h2 align='center'><a href="{% url 'home:team' %}">Your Team</a></h2>
-{% if perms.net.can_add_player %}
 <h2 align='center'><a href="{% url 'home:leaderboard' %}">Leaderboard</a></h2>
-{% endif %}
 <h2 align='center'><a href="{% url 'home:rules' %}">Rules</a></h2>
 {% endblock %}
 
@@ -24,5 +22,9 @@
 {% endblock %}
 
 {% block common %}
-<h3 align='center'>(Results of 17th March will be announced at 6 P.M. IST)</h3>
+<br/>
+<h3 align='center'>Results of 17th March</h3>
+<h4 align='center'>1. Amit Dubey</h4>
+<h4 align='center'>2. Manav Rao</h4>
+<h4 align='center'>3. Sagar Goyal</h4>
 {% endblock %}

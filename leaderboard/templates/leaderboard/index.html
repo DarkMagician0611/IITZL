@@ -21,13 +21,15 @@ Users | Zeheri League
 	<col width='150'>
 	<col width='100'>
 	<tr>
+		<th>Rank</th>
 		<th>Name</th>
 		<th>Points</th>
 	</tr>
 	{% for user in users %}
 		<tr>
+			<td>{{ forloop.counter }}</td>
 			<td>{{ user.user.first_name }}</td>
-			<td>{{ user.points }}</td>
+			<td>{{ user.points|floatformat:2 }}</td>
 		</tr>
 	{% endfor %}
 </ul>
