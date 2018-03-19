@@ -7,7 +7,8 @@
 <h2 align='center'>Welcome {{ user.get_full_name }} to ZeheriLeague</h2>
 <h1 align='center'>Let the Venom Spill</h1>
 <br/>
-<h2 align='center'><a href="{% url 'home:team' %}">Your Team</a></h2>
+<h2 align='center'><a href="{% url 'home:team' %}">Build Your Team</a></h2>
+<h2 align='center'><a href="{% url 'team:listTeams' %}">Previous Teams</a></h2>
 <h2 align='center'><a href="{% url 'home:leaderboard' %}">Leaderboard</a></h2>
 <h2 align='center'><a href="{% url 'home:rules' %}">Rules</a></h2>
 {% endblock %}
@@ -22,6 +23,8 @@
 {% endblock %}
 
 {% block common %}
+<br/>
+<h3 align='center'>You can start building your team for 7th and 8th April</h3>
 <br/>
 <h3 align='center'>Results of 17th March</h3>
 <h4 align='center'>1. Amit Dubey</h4>

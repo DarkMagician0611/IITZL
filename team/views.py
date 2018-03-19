@@ -228,3 +228,22 @@ def resetTeam(request):
 	team_players.delete()
 	team.delete()
 	return render(request, 'team/team_create.html', {})
+
+def listTeams(request):
+	matches = ['1', '2']
+	teams = []
+	black_mambas = []
+	for match in matches:
+		name = str(request.user) + ' match#' + match
+		team = Team.objects.filter(name=name)
+		if not team.exists():
+			continue
+		team = team[0]
+		black_mambas.append(team.black_mamba)
+		team_players = PlayerTeam.objects.filter(team=team)
+		x = []
+		for team_player in team_players:
+			x.append(team_player)
+		teams.append(x)
+	context = {'teams' : teams, 'black_mambas' : black_mambas}
+	return render(request, 'team/team_lists.html', context)

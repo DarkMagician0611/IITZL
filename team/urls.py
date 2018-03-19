@@ -16,4 +16,5 @@ urlpatterns = [
 	path('deleteTeamPlayer/<str:name>/', views.deleteTeamPlayer, name='deleteTeamPlayer'),
 	path('playerUpdate/', views.playerUpdate, name='playerUpdate'),
 	path('resetTeam/', views.resetTeam, name='resetTeam'),
+	path('listTeams/', views.listTeams, name='listTeams'),
 ]

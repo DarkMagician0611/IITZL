@@ -1,0 +1,43 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+{{ user.get_full_name }} | Teams
+{% endblock %}
+
+{% block body %}
+<h1 align='center'>{{ user.get_full_name }} | Teams</h1>
+<br/>
+<h2 align='center'>Black Mambas</h2>
+{% for bm in black_mambas %}
+<h4 align='center'>Match {{ forloop.counter }}: {{ bm }}</h4>
+{% endfor %}
+<br/>
+{% for team in teams %}
+<h2 align='center'>Match {{ forloop.counter }}</h2>
+<br/>
+<table border='2' align='center'>
+	<col width='300'>
+	<col width='150'>
+	<col width='100'>
+	<col width='100'>
+	<col width='100'>
+	<tr>
+		<th>Name</th>
+		<th>Squad</th>
+		<th>Venom</th>
+		<th>Category</th>
+		<th>Fresher/PG</th>
+	</tr>
+	{% for team_player in team %}
+		<tr>
+			<th><a href="{% url 'players:player_detail' team_player.player.name %}">{{ team_player.player.name }}</a></th>
+			<td>{{ team_player.player.squad }}</td>
+			<td>{{ team_player.player.venom }} ml</td>
+			<td>{{ team_player.player.category }}</td>
+			<td>{{ team_player.player.fresher_pg }}</td>
+		</tr>
+	{% endfor %}
+</ul>
+</table>
+{% endfor %}
+{% endblock %}
