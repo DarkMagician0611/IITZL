@@ -9,4 +9,7 @@ urlpatterns = [
 	path('matchNumber/', views.matchNumber, name='matchNumber'),
 	path('profile/', views.profile, name='profile'),
 	path('resetUsers/', views.resetUsers, name='resetUsers'),
+	path('substitutes/', views.substitutes, name='substitutes'),
+	path('countSubstitutes/', views.countSubstitutes, name='countSubstitutes'),
+	path('resetSubstitutes/', views.resetSubstitutes, name='resetSubstitutes'),
 ]

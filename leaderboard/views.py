@@ -82,3 +82,69 @@ def resetUsers(request):
 		ud.points = 0
 		ud.save()
 	return redirect('/leaderboard/')
+
+def substitute(request):
+	return render(request, 'leaderboard/substitutes.html', {})
+
+def countSubstitutes(request):
+	mi = int(request.POST['initial'])
+	mf = int(request.POST['final'])
+	users = User.objects.filter(groups__name='Players')
+	for user in users:
+		u = UserData.objects.filter(user=user)
+		if not u.exists():
+			ud = UserData(user=user)
+			ud.save()
+		ud = UserData.objects.get(user=user)
+		teami = str(user) + ' match#' + str(mi)
+		teamf = str(user) + ' match#' + str(mf)
+		teami = Team.objects.filter(name=teami)
+		teamf = Team.objects.filter(name=teami)
+		x = mi
+		if not teami.exists():
+			x -= 1
+			while x > 0:
+				teami = str(user) + ' match#' + str(x)
+				teami = Team.objects.filter(name=teami)
+				if teami.exists():
+					break
+				x -= 1
+		if x == 0:
+			continue
+		if not teamf.exists():
+			continue
+		teami = teami[0]
+		teamf = teamf[0]
+		tpi = PlayerTeam.objects.filter(team=teami)
+		tpf = PlayerTeam.objects.filter(team=teamf)
+		count = 0
+		freshersf = []
+		for player in tpf:
+			if player in tpi:
+				continue
+			else:
+				if player.player.fresher_pg == 'Fresher':
+					freshersf.append(player)
+				else:
+					count += 1
+		freshersi = []
+		for player in tpi:
+			if player.player.fresher_pg == 'Fresher' and not player in tpf:
+				freshersi.append(player)
+		if len(freshersf) > len(freshersi):
+			count += len(freshersf) - len(freshersi)
+		ud.substitutes -= count
+		ud.save()
+	return redirect('/leaderboard/')
+
+def resetSubstitutes(request):
+	users = User.objects.filter(groups__name='Players')
+	for user in users:
+		u = UserData.objects.filter(user=user)
+		if not u.exists():
+			ud = UserData(user=user)
+			ud.save()
+		ud = UserData.objects.get(user=user)
+		ud.substitutes = 0
+		ud.save()
+	return redirect('/leaderboard/')
