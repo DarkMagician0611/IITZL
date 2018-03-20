@@ -27,19 +27,25 @@ Users | Zeheri League
 	<col width='50'>
 	<col width='150'>
 	<col width='100'>
-	<col width='150'>
+	{% if perms.net.can_add_player %}
+	<col width='100'>
+	{% endif %}
 	<tr>
 		<th>Rank</th>
 		<th>Name</th>
 		<th>Points</th>
+		{% if perms.net.can_add_player %}
 		<th>Substitutions Left</th>
+		{% endif %}
 	</tr>
 	{% for user in users %}
 		<tr>
 			<td>{{ forloop.counter }}</td>
 			<td>{{ user.user.first_name }}</td>
 			<td>{{ user.points|floatformat:2 }}</td>
+			{% if perms.net.can_add_player %}
 			<td>{{ user.substitutes }}</td>
+			{% endif %}
 		</tr>
 	{% endfor %}
 </ul>

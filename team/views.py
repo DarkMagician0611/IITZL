@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Team, PlayerTeam, UserMatch
 from players.models import Player
+from leaderboard.models import UserData
 from django.http import HttpResponse
 import time
 
@@ -26,7 +27,13 @@ def index(request):
 		return render(request, 'team/team_create.html', {})
 
 def selectMatch(request):
-	return render(request, 'team/match.html', {})
+	u = UserData.objects.filter(user=request.user)
+	if not u.exists():
+		ud = UserData(user=user)
+		ud.save()
+	ud = UserData.objects.get(user=request.user)
+	info = ud.substitutes
+	return render(request, 'team/match.html', {'info' : info})
 
 def teamAddIndex(request):
 	squads = squad_list

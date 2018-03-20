@@ -116,23 +116,27 @@ def countSubstitutes(request):
 		teami = teami[0]
 		teamf = teamf[0]
 		tpi = PlayerTeam.objects.filter(team=teami)
+		tpi = [x.player for x in tpi]
 		tpf = PlayerTeam.objects.filter(team=teamf)
+		tpf = [x.player for x in tpf]
 		count = 0
 		freshersf = []
 		for player in tpf:
 			if player in tpi:
 				continue
 			else:
-				if player.player.fresher_pg == 'Fresher':
+				if player.fresher_pg == 'Fresher':
 					freshersf.append(player)
 				else:
 					count += 1
 		freshersi = []
 		for player in tpi:
-			if player.player.fresher_pg == 'Fresher' and not player in tpf:
+			if player.fresher_pg == 'Fresher' and not player in tpf:
 				freshersi.append(player)
 		if len(freshersf) > len(freshersi):
 			count += len(freshersf) - len(freshersi)
+		if len(tpi) < 11:
+			count -= 11 - len(tpi)
 		ud.substitutes -= count
 		ud.save()
 	return redirect('/leaderboard/')
