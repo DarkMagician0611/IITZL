@@ -29,7 +29,7 @@ def index(request):
 def selectMatch(request):
 	u = UserData.objects.filter(user=request.user)
 	if not u.exists():
-		ud = UserData(user=user)
+		ud = UserData(user=request.user)
 		ud.save()
 	ud = UserData.objects.get(user=request.user)
 	info = ud.substitutes
