@@ -11,11 +11,11 @@
 	<col width='100'>
 	<tr>
 		<th>Points</th>
-		<td>{{ u.points }}</th>
+		<td>{{ u.points|floatformat:2 }}</th>
 	</tr>
 	<tr>
 		<th>Substitutions Left</th>
-		<td>{{ u.substitutes|floatformat:2 }}</th>
+		<td>{{ u.substitutes }}</th>
 	</tr>
 </ul>
 </table>
