@@ -114,7 +114,12 @@
                 {% if user.is_authenticated %}
                 <li class="">
                 	<a href="{% url 'home:team' %}">
-                		&nbsp; Your Team
+                		&nbsp; Build Your Team
+                	</a>
+                </li>
+                <li class="">
+                	<a href="{% url 'team:listTeams' %}">
+                		&nbsp; Previous Teams
                 	</a>
                 </li>
                 {% if perms.net.can_add_player %}
