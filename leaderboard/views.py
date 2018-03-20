@@ -99,7 +99,7 @@ def countSubstitutes(request):
 		teami = str(user) + ' match#' + str(mi)
 		teamf = str(user) + ' match#' + str(mf)
 		teami = Team.objects.filter(name=teami)
-		teamf = Team.objects.filter(name=teami)
+		teamf = Team.objects.filter(name=teamf)
 		x = mi
 		if not teami.exists():
 			x -= 1
@@ -145,6 +145,6 @@ def resetSubstitutes(request):
 			ud = UserData(user=user)
 			ud.save()
 		ud = UserData.objects.get(user=user)
-		ud.substitutes = 0
+		ud.substitutes = 20
 		ud.save()
 	return redirect('/leaderboard/')

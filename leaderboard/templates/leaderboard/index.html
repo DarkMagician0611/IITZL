@@ -27,16 +27,19 @@ Users | Zeheri League
 	<col width='50'>
 	<col width='150'>
 	<col width='100'>
+	<col width='150'>
 	<tr>
 		<th>Rank</th>
 		<th>Name</th>
 		<th>Points</th>
+		<th>Substitutions Left</th>
 	</tr>
 	{% for user in users %}
 		<tr>
 			<td>{{ forloop.counter }}</td>
 			<td>{{ user.user.first_name }}</td>
 			<td>{{ user.points|floatformat:2 }}</td>
+			<td>{{ user.substitutes }}</td>
 		</tr>
 	{% endfor %}
 </ul>
