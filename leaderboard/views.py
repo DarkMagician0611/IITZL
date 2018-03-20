@@ -83,7 +83,7 @@ def resetUsers(request):
 		ud.save()
 	return redirect('/leaderboard/')
 
-def substitute(request):
+def substitutes(request):
 	return render(request, 'leaderboard/substitutes.html', {})
 
 def countSubstitutes(request):
