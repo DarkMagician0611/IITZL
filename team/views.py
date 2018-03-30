@@ -26,7 +26,7 @@ def index(request):
 	else:
 		match = int(um.match) - 1
 		while match > 0:
-			name = str(request.user) + ' match#' + match
+			name = str(request.user) + ' match#' + str(match)
 			team = Team.objects.filter(name=name)
 			if team.exists():
 				break
