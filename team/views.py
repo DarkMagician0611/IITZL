@@ -33,8 +33,18 @@ def index(request):
 		if match == 0:
 			return render(request, 'team/team_create.html', {})
 		else:
-			team_players = PlayerTeam.objects.filter(team=team[0])
-			context = {'team_players' : team_players, 'team' : team[0]}
+			team = team[0]
+			name = str(request.user) + ' match#' + um.match
+			new_team = Team(name=name, black_mamba=team.black_mamba)
+			new_team.save()
+			team_players = PlayerTeam.objects.filter(team=team)
+			for team_player in team_players:
+				player = team_player.player
+				name = str(new_team) + str(player)
+				new_team_player = PlayerTeam(team=new_team, player=player, name=name)
+				new_team_player.save()
+			new_team_players = PlayerTeam.objects.filter(team=new_team)
+			context = {'team_players' : new_team_players, 'team' : new_team}
 			return render(request, 'team/final_team.html', context)
 
 def selectMatch(request):
