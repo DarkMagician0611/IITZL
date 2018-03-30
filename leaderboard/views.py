@@ -137,6 +137,8 @@ def countSubstitutes(request):
 			count += len(freshersf) - len(freshersi)
 		if len(tpi) < 11:
 			count -= 11 - len(tpi)
+		if count < 0:
+			count = 0
 		ud.substitutes -= count
 		ud.save()
 	return redirect('/leaderboard/')

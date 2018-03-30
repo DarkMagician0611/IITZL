@@ -24,7 +24,18 @@ def index(request):
 		context = {'team_players' : team_players, 'team' : team[0]}
 		return render(request, 'team/final_team.html', context)
 	else:
-		return render(request, 'team/team_create.html', {})
+		match = int(um.match) - 1
+		while match > 0:
+			name = str(request.user) + ' match#' + match
+			team = Team.objects.filter(name=name)
+			if team.exists():
+				break
+		if match == 0:
+			return render(request, 'team/team_create.html', {})
+		else:
+			team_players = PlayerTeam.objects.filter(team=team[0])
+			context = {'team_players' : team_players, 'team' : team[0]}
+			return render(request, 'team/final_team.html', context)
 
 def selectMatch(request):
 	u = UserData.objects.filter(user=request.user)
