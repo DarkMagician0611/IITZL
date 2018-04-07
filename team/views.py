@@ -30,6 +30,7 @@ def index(request):
 			team = Team.objects.filter(name=name)
 			if team.exists():
 				break
+			match -= 1
 		if match == 0:
 			return render(request, 'team/team_create.html', {})
 		else:
