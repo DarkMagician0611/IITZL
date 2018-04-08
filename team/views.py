@@ -297,7 +297,7 @@ def createTeams(request):
 					x -= 1
 				if x != 0:
 					team = team[0]
-					name = str(user) + ' match#' + match
+					name = str(user) + ' match#' + str(match)
 					new_team = Team(name=name, black_mamba=team.black_mamba)
 					new_team.save()
 					team_players = PlayerTeam.objects.filter(team=team)
