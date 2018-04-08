@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Team, PlayerTeam, UserMatch
+from django.contrib.auth.models import User
 from players.models import Player
 from leaderboard.models import UserData
 from django.http import HttpResponse
@@ -259,7 +260,7 @@ def resetTeam(request):
 	return render(request, 'team/team_create.html', {})
 
 def listTeams(request):
-	matches = ['1', '2']
+	matches = ['1', '2', '3', '4', '5', '6']
 	teams = []
 	black_mambas = []
 	for match in matches:
@@ -276,3 +277,33 @@ def listTeams(request):
 		teams.append(x)
 	context = {'teams' : teams, 'black_mambas' : black_mambas}
 	return render(request, 'team/team_lists.html', context)
+
+def createTeams(request):
+	matches = [3, 4, 5, 6]
+	users = User.objects.filter(groups__name='Players')
+	for match in matches:
+		for user in users:
+			name = str(user) + ' match#' + str(match)
+			team = Team.objects.filter(name=name)
+			if team.exists():
+				continue
+			else:
+				x = match - 1
+				while(x > 0):
+					name = str(user) + ' match#' + str(x)
+					team = Team.objects.filter(name=name)
+					if team.exists():
+						break
+					x -= 1
+				if x != 0:
+					team = team[0]
+					name = str(user) + ' match#' + match
+					new_team = Team(name=name, black_mamba=team.black_mamba)
+					new_team.save()
+					team_players = PlayerTeam.objects.filter(team=team)
+					for team_player in team_players:
+						player = team_player.player
+						name = str(new_team) + str(player)
+						new_team_player = PlayerTeam(team=new_team, player=player, name=name)
+						new_team_player.save()
+	return redirect('/team/')

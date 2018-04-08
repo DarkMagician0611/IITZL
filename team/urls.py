@@ -17,4 +17,5 @@ urlpatterns = [
 	path('playerUpdate/', views.playerUpdate, name='playerUpdate'),
 	path('resetTeam/', views.resetTeam, name='resetTeam'),
 	path('listTeams/', views.listTeams, name='listTeams'),
+	path('createTeams/', views.createTeams, name='createTeams'),
 ]
